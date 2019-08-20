@@ -25,10 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    client.cpp \
+    mysql.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    client.h \
+    mysql.h
 
 FORMS += \
         mainwindow.ui
