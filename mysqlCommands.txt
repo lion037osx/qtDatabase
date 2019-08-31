@@ -1,0 +1,340 @@
+
+
+
+
+//crear base de datos MySql:
+
+#arrancar mysql 
+sudo /usr/local/mysql/support-files/mysql.server start 
+#parar 
+sudo /usr/local/mysql/support-files/mysql.server stop 
+
+sudo /usr/local/mysql/support-files/mysql.server restart
+
+#"linux:"
+sudo /etc/init.d/mysqld restart
+
+#remoto
+/usr/local/mysql/bin/mysql -h 192.169.1.39 -u leo -p
+
+
+#Run MySql
+/usr/local/mysql/bin/mysql -v
+
+CREATE DATABASE my_database;
+
+
+mysql.default_socket = /tmp/mysql.sock
+
+#ver usuarios
+select * from user.mysql;
+
+/*
+ echo X | telnet -e X 192.168.1.39 3306
+nc -z -w1 192.168.1.39 3306
+*/
+
+
+Si quieres hacer una prueba, crea el siguiente archivo:
+
+
+<?php
+$con = mysql_connect("localhost","root","");
+if (!$con){
+ die('No se pudo conectar porque: ' . mysql_error());
+} else{
+ echo "Conectado exitosamente";
+}
+mysql_close($con);
+?>
+
+
+#iniciar mysql
+
+/usr/local/mysql/bin/mysql -u root -p
+mysql -u root -p
+
+#apache enable!
+sudo su -
+apachectl start
+
+CREATE USER 'leo'@'192.168.1.38' IDENTIFIED BY '12345';
+
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'obscure';
+CREATE USER 'lionOSX'@'localhost' IDENTIFIED BY 'obscure';
+CREATE USER 'leo'@'127.0.0.1' IDENTIFIED BY '12345';
+
+grant all privileges on some_db.* to 'root'@'localhost' identified by '12345';
+
+grant all privileges on dbproducts.* to 'leo'@'192.168.1.38' identified by '12345';
+grant all privileges on dbproducts.* to 'leo'@'127.0.0.1' identified by '12345';
+
+
+UPDATE mysql.user SET Grant_priv='N', Super_priv='N' WHERE User='root';
+FLUSH PRIVILEGES;
+
+GRANT ALL ON *.* TO 'leo'@'192.168.1.38';
+
+
+
+UPDATE mysql.user SET Grant_priv='Y', Super_priv='Y' WHERE User='root';
+FLUSH PRIVILEGES;
+GRANT ALL ON *.* TO 'root'@'localhost';
+
+mysql> 
+SELECT host,user,password,Grant_priv,Super_priv FROM mysql.root;
+
+
+
+Pata crear un nuevo usuario escribimos (como root MySQL):
+
+;
+
+Con esto se creará el usuario "ooscarr" con la contraseña "obscure" para que se conecte desde localhost. Si queremos que pueda acceder desde otro equipo, habría que hacer lo mismo que se hizo anteriormente con los dominios o la dirección IP listados, que en mi caso sería:
+
+CREATE USER 'lionOSX'@'localhost' IDENTIFIED BY '12345';
+
+CREATE USER 'leo'@'192.168.1.38' IDENTIFIED BY '12345';
+
+CREATE USER 'lionOSX'@'127.0.0.1' IDENTIFIED BY '12345';
+Asignar base de datos a un usuario
+
+Ya, finalmente, le damos el permiso al usuario "ooscarr" recién creado para que administre la base de datos db_name, por ejemplo, con la siguiente sentencia SQL:
+
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+ ON agenda.*
+ TO 'leo'@'localhost';
+
+
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+ ON dbproducts.*
+ TO 'root'@'192.168.1.38';
+
+
+
+GRANT ALL ON dbproducts.* TO leo@'192.168.1.38' IDENTIFIED BY '12345';
+
+GRANT USAGE ON *.* TO 'root'@'localhost' IDENTIFIED BY '12345;
+GRANT USAGE ON *.* TO 'root'@'%' IDENTIFIED BY PASSWORD '12345';
+
+###ver base de datos:
+select user(), connection_id(), version(), database();
+
+mysql> select now(); select user();
+
+
+
+
+"BACKUP DATABASE"
+/usr/local/mysql/bin/mysqldump -u 'root' -p  --databases  ClientDatabase > FILENAME.sql
+
+/usr/local/mysql/bin/mysql -u root -p  
+
+mysql> select now(),
+-> uso
+-> ver \c
+mysql>
+
+CREATE USER 'lionOSX'@'localhost' IDENTIFIED BY '12345';
+
+CREATE USER 'optimus'@'192.168.1.39' IDENTIFIED BY '12345';
+
+mysql newdatabase -u root -p
+
+ /usr/local/mysql/bin/mysqladmin -u root password '12345'
+
+ /usr/local/mysql/bin/mysql -h localhost -u root -p
+
+ /usr/local/mysql/bin/mysql -uroot -p
+
+ /usr/local/mysql/bin/mysql -h host -u root -p 
+
+UPDATE user SET Password=PASSWORD('12345') WHERE user='root';
+
+
+
+UPDATE mysql.root SET password=password('12345');
+
+
+
+"SETEAR LA CLAVE DE USUARIO":
+	SET PASSWORD FOR 'root'@'localhost' = PASSWORD('12345');
+
+
+
+"Borrar"
+DROP TABLE name_table;
+
+
+"EXPORTAR BASE DE DATOS"
+
+select * from people AS foo 
+into outfile '/tmp/people.txt'
+FIELDS TERMINATED BY ';' 
+OPTIONALLY ENCLOSED BY '\"' 
+LINES TERMINATED BY '\n\r';
+
+
+# netstat -plutn | grep mysql
+tcp   0   0 0.0.0.0:3306   0.0.0.0:*   LISTEN   2010/mysqld
+
+#borrar usuarios
+DROP USER ‘lionOSX’@‘localhost’;
+DROP USER ‘lionOSX’@‘127.0.0.1’;
+
+DROP USER ‘root’@‘localhost’;
+
+Y como uno se puede imaginar:
+
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+ ON db_name.*
+ TO 'ooscarr'@'MacBook.local';
+
+
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+ ON db_name.*
+ TO 'ooscarr'@'127.0.0.1';
+
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP
+ ON ClientDatabase.*
+ TO 'leo'@'192.168.1.38';
+
+
+CREATE USER 'usuario'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'root'@'localhost' IDENTIFIED BY '12345';
+CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'pass';
+
+GRANT ALL PRIVILEGES ON * . * TO 'lionOSX'@'localhost';
+GRANT ALL PRIVILEGES ON * . * TO 'lionOSX'@'127.0.0.1';
+
+GRANT ALL PRIVILEGES ON * . * TO 'root'@'localhost';
+
+sudo /Library/StartupItems/MySQLCOM/MySQLCOM stop
+
+UPDATE user SET Password=PASSWORD('12345') WHERE Host='localhost' AND User='root';
+
+
+
+
+
+Para probar el nuevo usaurio, debes cerrar sesión escribiendo quit y volviendo a iniciar sesión con éste comando en la consola:
+
+mysql -u 'lionOSX'@'localhost' -p
+
+mysql -u 'leo'@'192.168.1.38' -p
+
+mysql -u 'root'@'localhost' -p
+#or 
+ /usr/local/mysql/bin/mysql -u 'root'@'localhost' -p
+
+SET PASSWORD FOR 'lionOSX'@'localhost' = PASSWORD('12345'); 
+
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('12345'); 
+
+
+UPDATE mysql.user SET Password=PASSWORD('12345') ;
+WHERE User='lionOSX' AND Host='host'; 
+FLUSH PRIVILEGES;  
+
+UPDATE new database.people SET Password=PASSWORD('12345') ;
+WHERE User='root' AND Host='host'; 
+FLUSH PRIVILEGES; 
+
+
+
+ejemplo:
+
+CREATE DATABASE my_database;
+SHOW DATABASES;
+USE my_database;
+CREATE TABLE people(id INT NULL ,name VARCHAR(40), lastname VARCHAR(40),phone INT NULL);
+
+
+
+
+
+
+
+LOAD DATA [LOCAL] INFILE '/Users/leonardoamaya/Documents/sourcecpp/agenda_database.cvs'
+    [REPLACE | IGNORE]
+    INTO TABLE people
+    [FIELDS
+        [TERMINATED BY '\t']
+        [[OPTIONALLY] ENCLOSED BY '']
+        [ESCAPED BY '\\' ]
+    ]
+    [LINES 
+        [STARTING BY '']    
+        [TERMINATED BY '\n']
+    ]
+    [IGNORE number LINES]
+    [(id,name,lastname,phone)];
+
+#importar una tabla!!!
+#copia toda la agenda!!!!!
+LOAD DATA LOCAL INFILE '/Users/leonardoamaya/Documents/sourcecpp/database/agenda_database.csv'  INTO TABLE newdatabase.people FIELDS TERMINATED BY ';'lines terminated by '\r';
+
+
+#ver tabla
+select * from people;
+
+#vaciar una tabla
+TRUNCATE people;
+
+load data local infile '/Users/leonardoamaya/Documents/sourcecpp/database/agenda_database.csv' into table newdatabase.people fields terminated by ',' enclosed by ',' lines terminated by '\n';
+
+
+
+
+/*
+sudo apt-get update
+sudo apt-get install package-name
+sudo apt-get install mysql-workbench-community
+
+
+
+
+
+
+sudo apt-get install libmysqlclient18
+
+sudo apt-get update
+sudo apt-get build-dep mysql-server
+apt-get source -b mysql-server
+sudo dpkg -i package-name.deb
+sudo dpkg -i mysql-common_version-and-platform-specific-part_amd64.deb
+sudo dpkg -i mysql-community-server_version-and-platform-specific-part_amd64.deb
+
+sudo dpkg -i mysql-community-client_version-and-platform-specific-part_amd64.deb
+
+sudo apt-get install package-name
+dpkg -l | grep mysql | grep ii
+
+"#paquetes!!!!"
+
+mysql-server
+mysql-community-server
+mysql-client
+mysql-community-client
+mysql-common
+libmysqlclient18
+libmysqlclient-dev
+libmysqld-dev
+mysql-testsuite
+mysql-community-test
+mysql-community-bench
+mysql-community-source
+mysql-workbench-community
+mysql-connector-python-py3
+mysql-connector-python	
+mysql-utilities-1.5
+
+
+
+ sudo apt-key add path/to/signature-file
+
+sudo apt-get install iodbc
+sudo apt-get install libmyodbc
+
+sudo apt-get install libmysqlclient-dev
+*/
