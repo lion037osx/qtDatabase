@@ -77,8 +77,10 @@ QPainter painter;
     *mon=(((time-(time/31556926)))/2629743%12)+1;
 
             QString currentDir=QDir::currentPath();
-            currentDir+= "/../sourceCode/pdf/Presupuesto";
-
+            QString currentDirLogo=currentDir;
+            currentDirLogo+="/../sourceCode/png/logo.png";
+            currentDir+=    "/../sourceCode/pdf/Presupuesto";
+QString filenameImageLogo(currentDirLogo);
     sprintf(namePDF,"%d-%02d-%02d%02d%02d%02d.pdf",(*year+1970),*mon,*day,*hour,*min,*sec);
     currentDir+=namePDF;
     //sprintf(dateTime,"%2d / %2d / %4d",*day,*mon,(*year+1970));
@@ -97,7 +99,19 @@ QPainter painter;
     }
     QFile f(currentDir);
     QPdfWriter* writer = new QPdfWriter(&f);
-   // writer->setPageSize(QPagedPaintDevice::A4);
+    writer->setPageSize(QPagedPaintDevice::A4);
+    //painter.drawImage(10,100, imageLogo);
+    //writer->newPage();
+    QPixmap pixmap(256,256);
+    pixmap.load(filenameImageLogo,"png");
+    QRect rect(100,500,128,128);
+
+    pixmap.scaled(rect.size());
+    painter.drawPixmap( rect.x(),rect.y() ,rect.size().height() ,rect.size().width(), pixmap);
+    qDebug()<<" x:"<<rect.x()<<" y:"<<rect.y()<<" h:"<<rect.size().height()<<" w:"<<rect.size().width();
+
+
+   // pixmap.scaled(1,1, Qt::KeepAspectRatio, Qt::FastTransformation);
     painter.setPen(Qt::gray);
     painter.setFont(QFont("Helvetica", 6, QFont::Bold));
     strcpy(stringText,"X");
@@ -117,7 +131,7 @@ QPainter painter;
     painter.drawText( 450, 70,dateTime);
     *mide=(*lengthMax-(strlen("Cotizacion"))*8)/2;
     painter.drawText(*mide, 200, "Cotizacion");
-    *mide=(*lengthMax-(strlen("by lio desi/home/megagn")*8))/2;
+    *mide=(*lengthMax-(strlen("by lio desi/home/meQgagn")*8))/2;
     painter.drawText(*mide, 240, "by lio design");
     writer->newPage();
     delete writer;
@@ -138,7 +152,6 @@ QPainter painter;
     painter.drawText(100, 160, captureFisrtEmail);
     int margen=60;
     painter.drawText(QRect(margen, 240, *lengthMax, 240), "Description");
-
     line.setLine(0,45,*lengthMax,45);
     painter.drawLine(line);
     line.setLine(margen,250,*lengthMax,250);
@@ -160,7 +173,7 @@ QPainter painter;
     painter.drawText(100, 350, "*   IC 4  x unidad $ ");
     }
     delete lengthMax;
-    painter.end();
+painter.end();
 }
 
 void MainWindow::funcion(int value){
@@ -178,7 +191,7 @@ void MainWindow::funcion(int value){
 #ifdef __DEBUGGER__
 //     qDebug()  <<"current dir"<<currentDir;
 #endif
-            QSqlQuery query( "SELECT * from People" );
+      QSqlQuery query( "SELECT * from People" );
 #ifdef __DEBUGGER__
      qDebug()  <<"QSqlQuery state_q: ";
 #endif
@@ -226,14 +239,12 @@ switch(value){
                 while ( query.next() ) {
                     id_tmp = query.value(0).toInt();
                  }
-
                 qDebug()  <<        "data base open : -> ADD DATA"<<value<<"\r\n";
                 query.prepare(      "INSERT INTO People(id,firstname,lastname,phone,address,email) "    \
                                     "VALUES (:id,:firstname,:lastname,:phone,:address,:email)");
                 query.bindValue(    ":id", ++id_tmp);
                 QString sIdTmp = QString::number(id_tmp);
                      ui->lineEditID->setText(sIdTmp);
-
                 query.bindValue(    ":firstname", ui->lineEditFirstName->text().toLatin1());
                 query.bindValue(    ":lastname", ui->lineEditLastName->text().toLatin1());
                 query.bindValue(    ":phone", ui->lineEditPhone->text().toInt());
