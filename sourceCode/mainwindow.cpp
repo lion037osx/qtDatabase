@@ -295,6 +295,8 @@ switch(value){
 
              if(db.open())
              {
+
+
                  qDebug()  <<"data base open : -> ADD DATA"<<value<<"\r\n";
                 // query.prepare( "INSERT INTO People (Word) VALUES (:word)");
                  //query.bindValue( ":word", ui->lineEditFirstName->text().toLatin1());
@@ -302,7 +304,7 @@ switch(value){
                                 "VALUES (:id,:firstname,:lastname,:phone,:address,:email)");
                  static int id_state=0;
                  qDebug()  <<"id_state: "<<id_state<<"\r\n";
-                 query.
+
                  query.bindValue( ":id", id_state++);
 
                   query.bindValue( ":firstname", ui->lineEditFirstName->text().toLatin1());
@@ -333,7 +335,17 @@ switch(value){
         db.close();
     }
     break;
+case 6:
 
+    if(db.open())
+    {  while ( query.next() ) {
+            int tmp = query.value(0).toInt();
+            qDebug() << "value 0:  "<< tmp;
+            }
+    }
+
+      db.close();
+    break;
     default:
         break;
     }
@@ -360,3 +372,10 @@ void MainWindow::on_pushButtonUpdateDatabase_clicked()
 {
      MainWindow::funcion(5);
 }
+
+
+void MainWindow::on_pushButtonViewTable_clicked()
+{
+     MainWindow::funcion(6);
+}
+

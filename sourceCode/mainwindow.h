@@ -28,6 +28,8 @@ private slots:
 
     void on_pushButtonUpdateDatabase_clicked();
 
+    void on_pushButtonViewTable_clicked();
+
 private:
      Ui::MainWindow *ui;
 };
