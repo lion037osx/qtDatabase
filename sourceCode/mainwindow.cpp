@@ -135,25 +135,21 @@ QPainter painter;
     painter.drawLine(line);
     painter.setPen(Qt::black);
     painter.setFont(QFont("Helvetica", 11, QFont::Normal));
-    if(ui->checkBoxPuff1->isChecked()){
+    if(ui->checkBoxIC1->isChecked()){
     painter.drawText(100, 400, "*   IC 1   x unidad $ ");
     }
-    if(ui->checkBoxPuff2->isChecked()){
+    if(ui->checkBoxIC2->isChecked()){
     painter.drawText(100, 450, "*   IC 2   x unidad $ ");
     }
-    if(ui->checkBoxPuff3->isChecked()){
+    if(ui->checkBoxIC3->isChecked()){
     painter.drawText(100, 500, "*   IC 3   x unidad $ ");
     }
-  if(ui->checkBoxSofa1->isChecked()){
+  if(ui->checkBoxIC4->isChecked()){
     painter.drawText(100, 650, "*   IC 4  x unidad $ ");
     }
     delete lengthMax;
     painter.end();
-    QPluginLo
 }
-
-
-
 
 void MainWindow::funcion(int value){
    // QPluginLoader loader("/usr/local/lib/libqsqlmysql.dylib");
@@ -172,7 +168,6 @@ void MainWindow::funcion(int value){
 //     qDebug()  <<"current dir"<<currentDir;
 #endif
             QSqlQuery query( "SELECT * from People" );
-
 #ifdef __DEBUGGER__
      qDebug()  <<"QSqlQuery state_q: ";
 #endif
@@ -182,13 +177,11 @@ switch(value){
             qDebug()  <<"\r\nCrear pdf"<<value;
         #endif
         break;
-
     case 2:
         #if defined(__DEBUGGER__)
             qDebug()  <<"Crear base de datos"<<value;
         #endif
-
-        if(db.open())  {
+        if(db.open()){
             //--- we're good! ---ldd libqsqlmysql.so
             qDebug()  << "Database open success! \n";
             bool stateQuery =query.exec( "CREATE TABLE IF NOT EXISTS People(id INTEGER UNIQUE PRIMARY KEY, firstname VARCHAR(42), lastname VARCHAR(42),phone INT,address VARCHAR(42),email VARCHAR(42))" );
@@ -203,9 +196,8 @@ switch(value){
             }
             query.exec();
         }
-        else
-        {
-             qDebug()  <<db.lastError().text();
+        else{
+             qDebug()<<db.lastError().text();
         }
         break;
 
@@ -222,10 +214,17 @@ switch(value){
                 while ( query.next() ) {
                     id_tmp = query.value(0).toInt();
                  }
+
+
+
                 qDebug()  <<        "data base open : -> ADD DATA"<<value<<"\r\n";
                 query.prepare(      "INSERT INTO People(id,firstname,lastname,phone,address,email) "    \
                                     "VALUES (:id,:firstname,:lastname,:phone,:address,:email)");
                 query.bindValue(    ":id", ++id_tmp);
+                QString sIdTmp = QString::number(id_tmp);
+                   // ui->labelIDUpdate->setText(sIdTmp);
+                     ui->lineEditID->setText(sIdTmp);
+
                 query.bindValue(    ":firstname", ui->lineEditFirstName->text().toLatin1());
                 query.bindValue(    ":lastname", ui->lineEditLastName->text().toLatin1());
                 query.bindValue(    ":phone", ui->lineEditPhone->text().toInt());
@@ -242,8 +241,7 @@ switch(value){
             query.exec();
             break;
     case 5 :
-    if(db.open())
-    {
+    if(db.open()){
            int c=0;
            c=  query.exec( "LOAD DATA LOCAL INFILE '"+currentDir+"/pdf/db/agenda_database.csv' INTO TABLE "+nameDatabase+".People FIELDS TERMINATED BY ';' lines terminated by '\r'");
            #if defined(__DEBUGGER__)
@@ -263,6 +261,16 @@ case 6:
     }
       db.close();
         break;
+
+
+case 7:
+    break;
+
+query.exec("SELECT * FROM People");
+query.exec();
+query.value(0).toInt();
+
+
     default:
         break;
     }
@@ -287,4 +295,26 @@ void MainWindow::on_pushButtonUpdateDatabase_clicked(){
 
 void MainWindow::on_pushButtonViewTable_clicked(){
      MainWindow::funcion(6);
+}
+
+void MainWindow::on_pushButton_2_clicked(){
+       MainWindow::funcion(7);
+}
+
+void MainWindow::on_radioButtonCheckId_clicked()
+{
+bool tmp=ui->radioButtonCheckId->isChecked();
+if(tmp){
+      ui->lineEditID->setEnabled(1);
+      ui->pushButtonSearch->setEnabled(1);
+      ui->pushButtonCreateDataBase->setEnabled(1);
+    }
+else{
+      ui->lineEditID->setDisabled(1);
+      ui->pushButtonSearch->setDisabled(1);
+      ui->pushButtonCreateDataBase->setDisabled(1);
+    }
+
+    qDebug()<<"click"<<tmp;
+
 }

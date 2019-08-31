@@ -23,8 +23,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>440</y>
+      <x>420</x>
+      <y>410</y>
       <width>171</width>
       <height>81</height>
      </rect>
@@ -203,7 +203,7 @@
      <string>e-mail</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="labelCotizar">
     <property name="geometry">
      <rect>
       <x>540</x>
@@ -223,10 +223,13 @@
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonCreateDataBase">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>520</y>
+      <y>510</y>
       <width>171</width>
       <height>81</height>
      </rect>
@@ -241,7 +244,7 @@
      <string>Crear Base de Datos</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBoxPuff1">
+   <widget class="QCheckBox" name="checkBoxIC1">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -260,7 +263,7 @@
      <string>IC 1</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBoxPuff2">
+   <widget class="QCheckBox" name="checkBoxIC2">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -279,7 +282,7 @@
      <string>IC 2</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBoxPuff3">
+   <widget class="QCheckBox" name="checkBoxIC3">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -298,7 +301,7 @@
      <string>IC 3</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBoxSofa1">
+   <widget class="QCheckBox" name="checkBoxIC4">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -321,7 +324,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>440</y>
+      <y>410</y>
       <width>171</width>
       <height>81</height>
      </rect>
@@ -337,10 +340,13 @@
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonClear">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>520</y>
+      <x>660</x>
+      <y>230</y>
       <width>171</width>
       <height>81</height>
      </rect>
@@ -355,43 +361,7 @@
      <string>Borrar Tabla</string>
     </property>
    </widget>
-   <widget class="QLabel" name="labelId">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>20</y>
-      <width>91</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>ID</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelIDUpdate">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>20</y>
-      <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>number</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="labelPrices">
     <property name="geometry">
      <rect>
       <x>640</x>
@@ -451,10 +421,13 @@
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonUpdateDatabase">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>520</y>
+      <x>210</x>
+      <y>510</y>
       <width>171</width>
       <height>81</height>
      </rect>
@@ -472,8 +445,8 @@
    <widget class="QPushButton" name="pushButtonViewTable">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>440</y>
+      <x>210</x>
+      <y>410</y>
       <width>171</width>
       <height>81</height>
      </rect>
@@ -486,6 +459,70 @@
     </property>
     <property name="text">
      <string>ViewTable</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonSearch">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>510</y>
+      <width>171</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Search</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButtonCheckId">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>30</y>
+      <width>112</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ID</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditID">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>30</y>
+      <width>113</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>true</bool>
+    </property>
+    <property name="inputMask">
+     <string/>
+    </property>
+    <property name="frame">
+     <bool>false</bool>
+    </property>
+    <property name="placeholderText">
+     <string/>
     </property>
    </widget>
   </widget>
