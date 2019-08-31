@@ -20,25 +20,6 @@
    <string>Budget</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>410</y>
-      <width>171</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>DejaVu Sans</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Generar PDF</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButtonExit">
     <property name="geometry">
      <rect>
@@ -523,6 +504,25 @@
     </property>
     <property name="placeholderText">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonGeneratorPDF">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>410</y>
+      <width>171</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DejaVu Sans</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Gen PDF</string>
     </property>
    </widget>
   </widget>

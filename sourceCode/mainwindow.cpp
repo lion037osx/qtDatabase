@@ -36,12 +36,16 @@ MainWindow::~MainWindow(){
     delete ui;
 }
 
+enum{
+    DEBUGGER_PDF,CREATE_DATABASE,ADD_USER,CLEAR,UPDATE_DATABASE_CSV,VIEW_TABLE,CHECK_ID
+}/*FUNCTION_DB_MYSQL*/;
+
 void MainWindow::on_pushButton_clicked(){
 int *year=new int ;
 int *mon=new int ;
 int *day=new int ;
 int *hour=new int ;
-int *min=new int ;
+int *min=new  int ;
 int *sec=new int ;
 int *mide=new int ;
 int *lengthMax=new int;
@@ -53,7 +57,7 @@ QDateTime local(UTC.toLocalTime());
 QByteArray captureFisrtName=ui->lineEditFirstName->text().toLatin1();
 QByteArray captureLastName=ui->lineEditLastName->text().toLatin1();
 QByteArray capturePhone=ui->lineEditPhone->text().toLatin1();
-QByteArray captureFisrtAddress=ui->lineEditAddress->text().toLatin1();
+QByteArray captureAddress=ui->lineEditAddress->text().toLatin1();
 QByteArray captureFisrtEmail=ui->lineEditemail->text().toLatin1();
 QLineF line(0, 120, 600, 120);
 //QPrinter printer(QPrinter::HighResolution);
@@ -71,10 +75,16 @@ QPainter painter;
     *hour=(time/3600)%24;
     *day=(time/(3600*24))%31;
     *mon=(((time-(time/31556926)))/2629743%12)+1;
-    sprintf(namePDF,"/home/mega/Documentos/sources/qt/qtPdfMysql/pdf/Presupuesto%d-%02d-%02d %02d %02d %02d.pdf",(*year+1970),*mon,*day,*hour,*min,*sec);
-    qDebug (namePDF);
-    sprintf(dateTime,"%2d / %2d / %4d",*day,*mon,(*year+1970));
-    printer.setOutputFileName(namePDF);
+
+            QString currentDir=QDir::currentPath();
+            currentDir+= "/../sourceCode/pdf/Presupuesto";
+
+    sprintf(namePDF,"%d-%02d-%02d%02d%02d%02d.pdf",(*year+1970),*mon,*day,*hour,*min,*sec);
+    currentDir+=namePDF;
+    //sprintf(dateTime,"%2d / %2d / %4d",*day,*mon,(*year+1970));
+    qDebug()<<currentDir;
+    printer.setOutputFileName(currentDir);
+
     delete year;
     delete mon;
     delete day;
@@ -85,9 +95,9 @@ QPainter painter;
         qWarning("failed to open file, is it writable?");          
         return ;
     }
-    QFile f(namePDF);
+    QFile f(currentDir);
     QPdfWriter* writer = new QPdfWriter(&f);
-    writer->setPageSize(QPagedPaintDevice::A4);
+   // writer->setPageSize(QPagedPaintDevice::A4);
     painter.setPen(Qt::gray);
     painter.setFont(QFont("Helvetica", 6, QFont::Bold));
     strcpy(stringText,"X");
@@ -124,28 +134,30 @@ QPainter painter;
     painter.drawText(100, 80,captureFisrtName );
     painter.drawText(100, 100, captureLastName);
     painter.drawText(100, 120, capturePhone);
-    painter.drawText(100, 140, captureFisrtAddress);
+    painter.drawText(100, 140, captureAddress);
     painter.drawText(100, 160, captureFisrtEmail);
-    painter.drawText(QRect(100, 100, 2000, 200), "test");
+    int margen=60;
+    painter.drawText(QRect(margen, 240, *lengthMax, 240), "Description");
+
     line.setLine(0,45,*lengthMax,45);
     painter.drawLine(line);
-    line.setLine(0,250,*lengthMax,250);
+    line.setLine(margen,250,*lengthMax,250);
     painter.drawLine(line);
-    line.setLine(0,750,*lengthMax,750);
+    line.setLine(margen,750,*lengthMax,750);
     painter.drawLine(line);
     painter.setPen(Qt::black);
     painter.setFont(QFont("Helvetica", 11, QFont::Normal));
     if(ui->checkBoxIC1->isChecked()){
-    painter.drawText(100, 400, "*   IC 1   x unidad $ ");
+    painter.drawText(100, 200, "*   IC 1   x unidad $ ");
     }
     if(ui->checkBoxIC2->isChecked()){
-    painter.drawText(100, 450, "*   IC 2   x unidad $ ");
+    painter.drawText(100, 250, "*   IC 2   x unidad $ ");
     }
     if(ui->checkBoxIC3->isChecked()){
-    painter.drawText(100, 500, "*   IC 3   x unidad $ ");
+    painter.drawText(100, 300, "*   IC 3   x unidad $ ");
     }
   if(ui->checkBoxIC4->isChecked()){
-    painter.drawText(100, 650, "*   IC 4  x unidad $ ");
+    painter.drawText(100, 350, "*   IC 4  x unidad $ ");
     }
     delete lengthMax;
     painter.end();
@@ -154,7 +166,6 @@ QPainter painter;
 void MainWindow::funcion(int value){
    // QPluginLoader loader("/usr/local/lib/libqsqlmysql.dylib");
     QPluginLoader loader("/usr/lib/x86_64-linux-gnu/qt5/plugins/sqldrivers");
-
     loader.load();
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");
@@ -163,7 +174,7 @@ void MainWindow::funcion(int value){
     db.setUserName("myuser");
     db.setPassword("pass");
     QString currentDir=QDir::currentPath();
-    currentDir+= "/../source_code";
+    currentDir+= "/../sourceCode";
 #ifdef __DEBUGGER__
 //     qDebug()  <<"current dir"<<currentDir;
 #endif
@@ -172,12 +183,13 @@ void MainWindow::funcion(int value){
      qDebug()  <<"QSqlQuery state_q: ";
 #endif
 switch(value){
-    case 1:
+    case   DEBUGGER_PDF:
         #ifdef __DEBUGGER__
             qDebug()  <<"\r\nCrear pdf"<<value;
         #endif
+             on_pushButton_clicked();
         break;
-    case 2:
+    case CREATE_DATABASE:
         #if defined(__DEBUGGER__)
             qDebug()  <<"Crear base de datos"<<value;
         #endif
@@ -201,7 +213,7 @@ switch(value){
         }
         break;
 
-    case 3:
+    case ADD_USER:
              if ( !query.isActive() ){
                qDebug()  <<"Add user"<<value;
              }
@@ -215,14 +227,11 @@ switch(value){
                     id_tmp = query.value(0).toInt();
                  }
 
-
-
                 qDebug()  <<        "data base open : -> ADD DATA"<<value<<"\r\n";
                 query.prepare(      "INSERT INTO People(id,firstname,lastname,phone,address,email) "    \
                                     "VALUES (:id,:firstname,:lastname,:phone,:address,:email)");
                 query.bindValue(    ":id", ++id_tmp);
                 QString sIdTmp = QString::number(id_tmp);
-                   // ui->labelIDUpdate->setText(sIdTmp);
                      ui->lineEditID->setText(sIdTmp);
 
                 query.bindValue(    ":firstname", ui->lineEditFirstName->text().toLatin1());
@@ -235,14 +244,15 @@ switch(value){
              }
         break;
 
-    case 4 :
+    case CLEAR:
             qDebug()<<"clear table People";
             query.prepare( "TRUNCATE people" );
             query.exec();
             break;
-    case 5 :
+    case UPDATE_DATABASE_CSV:
     if(db.open()){
            int c=0;
+           qDebug()<<"current dir "<<currentDir;
            c=  query.exec( "LOAD DATA LOCAL INFILE '"+currentDir+"/pdf/db/agenda_database.csv' INTO TABLE "+nameDatabase+".People FIELDS TERMINATED BY ';' lines terminated by '\r'");
            #if defined(__DEBUGGER__)
                qDebug()  <<"state Update data base C:" <<c;
@@ -250,20 +260,19 @@ switch(value){
         db.close();
     }
     break;
-case 6:
+case VIEW_TABLE:
 
     if(db.open()){
         query.exec("SELECT * FROM People");
         query.exec();
         while ( query.next() ) {
-            int tmp = query.value(0).toInt();
+             query.value(0).toInt();
         }
     }
       db.close();
         break;
 
-
-case 7:
+case CHECK_ID:
     break;
 
 query.exec("SELECT * FROM People");
@@ -277,29 +286,27 @@ query.value(0).toInt();
 }
 
 
+
 void MainWindow::on_pushButtonCreateDataBase_clicked(){
-     MainWindow::funcion(2);
+     MainWindow::funcion(CREATE_DATABASE);
 }
 
 void MainWindow::on_pushButtonAddUser_clicked(){
-     MainWindow::funcion(3);
+     MainWindow::funcion(ADD_USER);
 }
 
 void MainWindow::on_pushButtonClear_clicked(){
-     MainWindow::funcion(4);
+     MainWindow::funcion(CLEAR);
 }
 
 void MainWindow::on_pushButtonUpdateDatabase_clicked(){
-     MainWindow::funcion(5);
+    // MainWindow::funcion(UPDATE_DATABASE);
 }
 
 void MainWindow::on_pushButtonViewTable_clicked(){
-     MainWindow::funcion(6);
+     MainWindow::funcion(VIEW_TABLE);
 }
 
-void MainWindow::on_pushButton_2_clicked(){
-       MainWindow::funcion(7);
-}
 
 void MainWindow::on_radioButtonCheckId_clicked()
 {
@@ -318,3 +325,7 @@ else{
     qDebug()<<"click"<<tmp;
 
 }
+
+void MainWindow::on_pushButtonGeneratorPDF_clicked()
+{
+MainWindow::funcion(DEBUGGER_PDF);}
