@@ -85,7 +85,6 @@ QDateTime * date_time= new QDateTime(UTC.date());
     //sprintf(dateTime,"%2d / %2d / %4d",*day,*mon,(*year+1970));
     qDebug()<<currentDir;
     printer.setOutputFileName(currentDir);
-
     if (! painter.begin(&printer)) { // failed to open file
         qWarning("failed to open file, is it writable?");          
         return ;
@@ -93,8 +92,6 @@ QDateTime * date_time= new QDateTime(UTC.date());
     QFile f(currentDir);
     QPdfWriter* writer = new QPdfWriter(&f);
     writer->setPageSize(QPagedPaintDevice::A4);
-    //painter.drawImage(10,100, imageLogo);
-    //writer->newPage();
     QPixmap pixmap(256,256);
     pixmap.load(filenameImageLogo,"png");
     QRect rect(100,500,128,128);
@@ -274,12 +271,9 @@ case VIEW_TABLE:
 
 case CHECK_ID:
     break;
-
-query.exec("SELECT * FROM People");
-query.exec();
-query.value(0).toInt();
-
-
+//    query.exec("SELECT * FROM People");
+//    query.exec();
+//    query.value(0).toInt();
     default:
         break;
     }
