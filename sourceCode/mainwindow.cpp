@@ -41,14 +41,14 @@ enum{
 }/*FUNCTION_DB_MYSQL*/;
 
 void MainWindow::on_pushButton_clicked(){
-int *year=new int ;
-int *mon=new int ;
-int *day=new int ;
-int *hour=new int ;
-int *min=new  int ;
-int *sec=new int ;
-int *mide=new int ;
-int *lengthMax=new int;
+int year;
+int mon;
+int day;
+int hour;
+int min;
+int sec;
+int * mide = new int;
+int * lengthMax=new int;
 *lengthMax=560;
 char namePDF[120];
 char dateTime[40],stringText[40];
@@ -63,36 +63,29 @@ QLineF line(0, 120, 600, 120);
 //QPrinter printer(QPrinter::HighResolution);
 QPrinter printer;
 QPainter painter;
-    time_t  time=UTC.toTime_t();
-    time=time-10800;
-    *year=(UTC.toTime_t()/31556926);
+QTime time(UTC.time());
+QDateTime * date_time= new QDateTime(UTC.date());
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setPaperSize(QPrinter::A4);
     qreal top=20, left=15, right=15, bottom=20;
     printer.setPageMargins(left, top, right, bottom, QPrinter::Millimeter);
-    *sec=time%60;
-    *min=(time/60)%60;
-    *hour=(time/3600)%24;
-    *day=(time/(3600*24))%31;
-    *mon=(((time-(time/31556926)))/2629743%12)+1;
-
-            QString currentDir=QDir::currentPath();
-            QString currentDirLogo=currentDir;
-            currentDirLogo+="/../sourceCode/png/logo.png";
-            currentDir+=    "/../sourceCode/pdf/Presupuesto";
-QString filenameImageLogo(currentDirLogo);
-    sprintf(namePDF,"%d-%02d-%02d%02d%02d%02d.pdf",(*year+1970),*mon,*day,*hour,*min,*sec);
+    hour=time.currentTime().hour();
+    sec=time.second();
+    min=time.minute();
+    day=date_time->date().day();
+    mon=date_time->date().month();
+    year= (date_time->date().year());
+    QString currentDir=QDir::currentPath();
+    QString currentDirLogo=currentDir;
+    currentDirLogo+="/../sourceCode/png/logo.png";
+    currentDir+=    "/../sourceCode/pdf/cotiz";
+    QString filenameImageLogo(currentDirLogo);
+    sprintf(namePDF,"%d%02d%02d%02d%02d%02d.pdf",(year),mon,day,hour,min,sec);
     currentDir+=namePDF;
     //sprintf(dateTime,"%2d / %2d / %4d",*day,*mon,(*year+1970));
     qDebug()<<currentDir;
     printer.setOutputFileName(currentDir);
 
-    delete year;
-    delete mon;
-    delete day;
-    delete hour;
-    delete min;
-    delete sec;
     if (! painter.begin(&printer)) { // failed to open file
         qWarning("failed to open file, is it writable?");          
         return ;
@@ -105,14 +98,10 @@ QString filenameImageLogo(currentDirLogo);
     QPixmap pixmap(256,256);
     pixmap.load(filenameImageLogo,"png");
     QRect rect(100,500,128,128);
-
     pixmap.scaled(rect.size());
-    painter.drawPixmap( rect.x(),rect.y() ,rect.size().height() ,rect.size().width(), pixmap);
-    qDebug()<<" x:"<<rect.x()<<" y:"<<rect.y()<<" h:"<<rect.size().height()<<" w:"<<rect.size().width();
-
-
-   // pixmap.scaled(1,1, Qt::KeepAspectRatio, Qt::FastTransformation);
+    //qDebug()<<" x:"<<rect.x()<<" y:"<<rect.y()<<" h:"<<rect.size().height()<<" w:"<<rect.size().width();
     painter.setPen(Qt::gray);
+    painter.drawPixmap( rect.x(),rect.y() ,rect.size().height() ,rect.size().width(), pixmap);
     painter.setFont(QFont("Helvetica", 6, QFont::Bold));
     strcpy(stringText,"X");
     *mide=(*lengthMax-(strlen(stringText)))/2;
