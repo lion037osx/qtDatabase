@@ -65,8 +65,23 @@ QPrinter printer;
 QPainter painter;
 QTime time(UTC.time());
 QDateTime * date_time= new QDateTime(UTC.date());
+
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setPaperSize(QPrinter::A4);
+
+    QString currentDir=QDir::currentPath();
+    QString currentDirLogo=currentDir;
+    currentDirLogo+="/../sourceCode/png/logo.png";
+    currentDir+=    "/../sourceCode/pdf/cotiz";
+    QString filenameImageLogo(currentDirLogo);
+    QFile f(currentDir);
+    QPdfWriter* writer = new QPdfWriter(&f);
+    writer->setPageSize(QPagedPaintDevice::A4);
+    QPixmap pixmap(128,128);
+    pixmap.load(filenameImageLogo,"png");
+    QRect rect(600,0,96,96);
+    pixmap.scaled(rect.size());
+    //qDebug()<<" x:"<<rect.x()<<" y:"<<rect.y()<<" h:"<<rect.size().height()<<" w:"<<rect.size().width();
     qreal top=20, left=15, right=15, bottom=20;
     printer.setPageMargins(left, top, right, bottom, QPrinter::Millimeter);
     hour=time.currentTime().hour();
@@ -75,11 +90,7 @@ QDateTime * date_time= new QDateTime(UTC.date());
     day=date_time->date().day();
     mon=date_time->date().month();
     year= (date_time->date().year());
-    QString currentDir=QDir::currentPath();
-    QString currentDirLogo=currentDir;
-    currentDirLogo+="/../sourceCode/png/logo.png";
-    currentDir+=    "/../sourceCode/pdf/cotiz";
-    QString filenameImageLogo(currentDirLogo);
+
     sprintf(namePDF,"%d%02d%02d%02d%02d%02d.pdf",(year),mon,day,hour,min,sec);
     currentDir+=namePDF;
     //sprintf(dateTime,"%2d / %2d / %4d",*day,*mon,(*year+1970));
@@ -89,14 +100,6 @@ QDateTime * date_time= new QDateTime(UTC.date());
         qWarning("failed to open file, is it writable?");          
         return ;
     }
-    QFile f(currentDir);
-    QPdfWriter* writer = new QPdfWriter(&f);
-    writer->setPageSize(QPagedPaintDevice::A4);
-    QPixmap pixmap(256,256);
-    pixmap.load(filenameImageLogo,"png");
-    QRect rect(100,500,128,128);
-    pixmap.scaled(rect.size());
-    //qDebug()<<" x:"<<rect.x()<<" y:"<<rect.y()<<" h:"<<rect.size().height()<<" w:"<<rect.size().width();
     painter.setPen(Qt::gray);
     painter.drawPixmap( rect.x(),rect.y() ,rect.size().height() ,rect.size().width(), pixmap);
     painter.setFont(QFont("Helvetica", 6, QFont::Bold));
@@ -117,8 +120,8 @@ QDateTime * date_time= new QDateTime(UTC.date());
     painter.drawText( 450, 70,dateTime);
     *mide=(*lengthMax-(strlen("Cotizacion"))*8)/2;
     painter.drawText(*mide, 200, "Cotizacion");
-    *mide=(*lengthMax-(strlen("by lio desi/home/meQgagn")*8))/2;
-    painter.drawText(*mide, 240, "by lio design");
+    *mide=(*lengthMax-(strlen("by lio design")*8))/2;
+    painter.drawText(*mide, 1000, "by lio design");
     writer->newPage();
     delete writer;
     delete mide;
@@ -137,27 +140,24 @@ QDateTime * date_time= new QDateTime(UTC.date());
     painter.drawText(100, 140, captureAddress);
     painter.drawText(100, 160, captureFisrtEmail);
     int margen=60;
-    painter.drawText(QRect(margen, 240, *lengthMax, 240), "Description");
+    painter.drawText(QRect(margen, 260, *lengthMax, 240), "Description");
     line.setLine(0,45,*lengthMax,45);
     painter.drawLine(line);
     line.setLine(margen,250,*lengthMax,250);
     painter.drawLine(line);
-    line.setLine(margen,750,*lengthMax,750);
+    line.setLine(margen,950,*lengthMax,950);
     painter.drawLine(line);
     painter.setPen(Qt::black);
     painter.setFont(QFont("Helvetica", 11, QFont::Normal));
-    if(ui->checkBoxIC1->isChecked()){
-    painter.drawText(100, 200, "*   IC 1   x unidad $ ");
-    }
-    if(ui->checkBoxIC2->isChecked()){
-    painter.drawText(100, 250, "*   IC 2   x unidad $ ");
-    }
-    if(ui->checkBoxIC3->isChecked()){
-    painter.drawText(100, 300, "*   IC 3   x unidad $ ");
-    }
-  if(ui->checkBoxIC4->isChecked()){
-    painter.drawText(100, 350, "*   IC 4  x unidad $ ");
-    }
+    if(ui->checkBoxIC1->isChecked())
+
+        painter.drawText(margen, 400, "*   IC 1   x unit $ ");
+    if(ui->checkBoxIC2->isChecked())
+        painter.drawText(margen, 420, "*   IC 2   x unit $ ");
+    if(ui->checkBoxIC3->isChecked())
+        painter.drawText(margen, 440, "*   IC 3   x unit $ ");
+  if(ui->checkBoxIC4->isChecked())
+        painter.drawText(margen, 460, "*   IC 4  x unit $ ");
     delete lengthMax;
 painter.end();
 }
